@@ -575,16 +575,7 @@ String blockTimestampToDate(int slot) {
 
 /// Convert `string` to `Symbol`. format: `precision,NAME`. */
 Symbol stringToSymbol(String s) {
-  RegExp exp = new RegExp(r"^([0-9]+),([A-Z]+)$");
-  var m = exp.allMatches(s).toList();
-  if (!exp.hasMatch(s)) {
-    throw 'Invalid symbol';
-  }
-  
-  print('WHAT IS INSIDE');
-m.forEach((element) {
-    print(element.toString());
-  });
+  final m = s.split(',');
   return Symbol(name: m[1].toString(), precision: int.parse(m[0].toString()));
 }
 
