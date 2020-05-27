@@ -580,7 +580,12 @@ Symbol stringToSymbol(String s) {
   if (!exp.hasMatch(s)) {
     throw 'Invalid symbol';
   }
-  return Symbol(name: m[2].toString(), precision: int.parse([1].toString()));
+  
+  print('WHAT IS INSIDE');
+m.forEach((element) {
+    print(element.toString());
+  });
+  return Symbol(name: m[1].toString(), precision: int.parse(m[0].toString()));
 }
 
 /// Convert `Symbol` to `string`. format: `precision,NAME`. */
