@@ -19,9 +19,8 @@ class SerializerState {
   /// Have any binary extensions been skipped? */
   bool skippedBinaryExtension;
 
-  SerializerState(
-      {this.options = const SerializerOptions(false),
-      this.skippedBinaryExtension = false});
+  SerializerState({this.options = const SerializerOptions(false),
+    this.skippedBinaryExtension = false});
 }
 
 /// Serialize and deserialize data */
@@ -114,7 +113,7 @@ class SerialBuffer {
       throw 'Read past end of buffer';
     }
     var result =
-        Uint8List.view(array.buffer, array.offsetInBytes + readPos, len);
+    Uint8List.view(array.buffer, array.offsetInBytes + readPos, len);
     readPos += len;
     return result;
   }
@@ -213,7 +212,10 @@ class SerialBuffer {
 
   // /** Append a `float32` */
   void pushFloat32(double v) {
-    pushArray(Float32List.fromList([v]).buffer.asUint8List());
+    pushArray(Float32List
+        .fromList([v])
+        .buffer
+        .asUint8List());
   }
 
   // /** Get a `float32` */
@@ -223,7 +225,10 @@ class SerialBuffer {
 
   // /** Append a `float64` */
   void pushFloat64(double v) {
-    pushArray(Float64List.fromList([v]).buffer.asUint8List());
+    pushArray(Float64List
+        .fromList([v])
+        .buffer
+        .asUint8List());
   }
 
   // /** Get a `float64` */
@@ -448,20 +453,19 @@ class SerialBuffer {
   }
 } // SerialBuffer
 
-Type createType(
-    {String name = '<missing name>',
-    String aliasOfName = "",
-    Type arrayOf,
-    Type optionalOf,
-    void Function(Type self, SerialBuffer buffer, Object data,
-            {SerializerState state, bool allowExtensions})
-        serialize,
-    Object Function(Type self, SerialBuffer buffer,
-            {SerializerState state, bool allowExtensions})
-        deserialize,
-    String baseName: "",
-    List<Field> fields: const [],
-    Type extensionOf}) {
+Type createType({String name = '<missing name>',
+  String aliasOfName = "",
+  Type arrayOf,
+  Type optionalOf,
+  void Function(Type self, SerialBuffer buffer, Object data,
+      {SerializerState state, bool allowExtensions})
+  serialize,
+  Object Function(Type self, SerialBuffer buffer,
+      {SerializerState state, bool allowExtensions})
+  deserialize,
+  String baseName: "",
+  List<Field> fields: const [],
+  Type extensionOf}) {
   var t = Type(
       aliasOfName: aliasOfName,
       name: name,
@@ -560,9 +564,9 @@ String timePointSecToDate(int sec) {
 /// Convert date in ISO format to `block_timestamp_type` (half-seconds since a different epoch) */
 int dateToBlockTimestamp(String date) {
   return ((checkDateParse(date + 'Z')
-                  .subtract(Duration(milliseconds: 946684800000)))
-              .millisecondsSinceEpoch /
-          500)
+      .subtract(Duration(milliseconds: 946684800000)))
+      .millisecondsSinceEpoch /
+      500)
       .round();
 }
 
@@ -606,10 +610,9 @@ void serializeStruct(Type self, SerialBuffer buffer, Object data,
       field.type.serialize(field.type, buffer, dy[field.name],
           state: state,
           allowExtensions:
-              allowExtensions && field == self.fields[self.fields.length - 1]);
+          allowExtensions && field == self.fields[self.fields.length - 1]);
     } else {
-      if ((allowExtensions && field.type.extensionOf != null) ||
-          field.type.optionalOf != null) {
+      if (allowExtensions && field.type.extensionOf != null) {
         state.skippedBinaryExtension = true;
       } else {
         throw 'missing ' +
@@ -1172,7 +1175,7 @@ Map<String, Type> getTypesFromAbi(Map<String, Type> initialTypes, Abi abi) {
           baseName: str.base,
           fields: str.fields
               ?.map((item) =>
-                  Field(name: item.name, typeName: item.type, type: null))
+              Field(name: item.name, typeName: item.type, type: null))
               ?.toList(),
           serialize: serializeStruct,
           deserialize: deserializeStruct);
